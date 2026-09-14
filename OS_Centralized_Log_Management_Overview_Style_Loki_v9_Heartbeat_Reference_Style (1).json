@@ -1,0 +1,1572 @@
+{
+  "__inputs": [],
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "id": 100,
+      "type": "row",
+      "title": "OS CENTRALIZED LOG MANAGEMENT",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 1
+      },
+      "collapsed": false,
+      "panels": []
+    },
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "TOTAL SERVERS (INVENTORY)",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 0,
+        "y": 1,
+        "w": 6,
+        "h": 5
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count(sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d])))",
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "0"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "SERVERS ONLINE (HEARTBEAT)",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 6,
+        "y": 1,
+        "w": 6,
+        "h": 5
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count(sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[5m])))",
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "0"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "NO HEARTBEAT / DOWN",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 12,
+        "y": 1,
+        "w": 6,
+        "h": 5
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count((sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d]))) unless (sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[5m]))))",
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "noValue": "0"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "SERVER AVAILABILITY",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 18,
+        "y": 1,
+        "w": 6,
+        "h": 5
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "100 * count(sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[5m]))) / count(sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d])))",
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "noValue": "0"
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "orientation": "auto",
+        "textMode": "auto",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto"
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 101,
+      "type": "text",
+      "title": "SITE STATUS",
+      "gridPos": {
+        "x": 0,
+        "y": 6,
+        "w": 18,
+        "h": 1
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "## Site Server Status\n**Definition:** Online = host sent logs in selected range. No Log / Down = host was seen in previous equal-length range but not in selected range."
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      }
+    },
+    {
+      "id": 102,
+      "type": "text",
+      "title": "APPLICATION STATUS",
+      "gridPos": {
+        "x": 18,
+        "y": 6,
+        "w": 6,
+        "h": 1
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "## Application / Server Group\nCounts are derived only from Loki labels (`app_group`)."
+      },
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      }
+    },
+    {
+      "id": 110,
+      "type": "gauge",
+      "title": "DC1 | TOTAL SERVER",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 0,
+        "y": 7,
+        "w": 3,
+        "h": 5
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count(sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=\"dc1\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d])))",
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 111,
+      "type": "gauge",
+      "title": "DC1 | ONLINE",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 3,
+        "y": 7,
+        "w": 3,
+        "h": 5
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "color": {
+            "fixedColor": "green",
+            "mode": "thresholds"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count(sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=\"dc1\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[5m])))",
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 112,
+      "type": "gauge",
+      "title": "DC1 | NO HEARTBEAT",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 6,
+        "y": 7,
+        "w": 3,
+        "h": 5
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "color": {
+            "fixedColor": "red",
+            "mode": "thresholds"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count((sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=\"dc1\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d]))) unless (sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=\"dc1\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[5m]))))",
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 113,
+      "type": "gauge",
+      "title": "DC2 | TOTAL SERVER",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 9,
+        "y": 7,
+        "w": 3,
+        "h": 5
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count(sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=\"dc2\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d])))",
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 114,
+      "type": "gauge",
+      "title": "DC2 | ONLINE",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 12,
+        "y": 7,
+        "w": 3,
+        "h": 5
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "color": {
+            "fixedColor": "green",
+            "mode": "thresholds"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count(sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=\"dc2\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[5m])))",
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 115,
+      "type": "gauge",
+      "title": "DC2 | NO HEARTBEAT",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 15,
+        "y": 7,
+        "w": 3,
+        "h": 5
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0,
+          "min": 0,
+          "color": {
+            "fixedColor": "red",
+            "mode": "thresholds"
+          }
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count((sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=\"dc2\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d]))) unless (sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=\"dc2\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[5m]))))",
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "sizing": "auto"
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 120,
+      "type": "table",
+      "title": "APPLICATION / SERVER STATUS",
+      "description": "Application groups with known, online, and no-log/down server counts.",
+      "gridPos": {
+        "x": 18,
+        "y": 7,
+        "w": 6,
+        "h": 15
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count by (app_group) (sum by (host,app_group) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d])))",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "queryType": "instant",
+          "legendFormat": ""
+        },
+        {
+          "refId": "B",
+          "expr": "count by (app_group) (sum by (host,app_group) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[5m])))",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "queryType": "instant",
+          "legendFormat": ""
+        },
+        {
+          "refId": "C",
+          "expr": "count by (app_group) ((sum by (host,app_group) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d]))) unless (sum by (host,app_group) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[5m]))))",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "queryType": "instant",
+          "legendFormat": ""
+        }
+      ],
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "indexByName": {
+              "app_group": 0,
+              "Value #A": 1,
+              "Value #B": 2,
+              "Value #C": 3
+            },
+            "renameByName": {
+              "app_group": "Applications",
+              "Value #A": "Total Server",
+              "Value #B": "UP",
+              "Value #C": "No Log / Down",
+              "Time": ""
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "center",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Applications"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 260
+              },
+              {
+                "id": "custom.align",
+                "value": "left"
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Open application server / IP detail",
+                    "url": "/d/${__dashboard.uid}?var-environment=${environment}&var-site=${site}&var-app_group=${__value.text}&var-server_role=${server_role}&var-os=${os}&var-host=${host}&var-source=${source}&${__url_time_range}",
+                    "openInNewTab": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Server"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "UP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 80
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "No Log / Down"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "cellHeight": "sm",
+        "enablePagination": false,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "displayName": "Applications",
+            "desc": false
+          }
+        ]
+      }
+    },
+    {
+      "id": 130,
+      "type": "piechart",
+      "title": "SERVER DISTRIBUTION BY OS",
+      "description": "Unique servers grouped by OS in the selected time range. This panel uses host + os and does not require the source label.",
+      "gridPos": {
+        "x": 0,
+        "y": 12,
+        "w": 8,
+        "h": 7
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "count by (os) (sum by (host,os) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d])))",
+          "queryType": "instant",
+          "legendFormat": "{{os}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 131,
+      "type": "piechart",
+      "title": "OS LOG DISTRIBUTION BY SOURCE",
+      "description": "OS log records grouped by source in the selected time range. Source is expected to be populated by Fluent Bit.",
+      "gridPos": {
+        "x": 8,
+        "y": 12,
+        "w": 8,
+        "h": 7
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (source) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source!=\"heartbeat\",source=~\"$source\"}[$__range]))",
+          "queryType": "instant",
+          "legendFormat": "{{source}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "right",
+          "showLegend": true
+        },
+        "pieType": "pie",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 132,
+      "type": "bargauge",
+      "title": "TOP 10 HOSTS BY LOG VOLUME",
+      "description": "Top 10 hosts by number of OS log records in the selected time range.",
+      "gridPos": {
+        "x": 0,
+        "y": 27,
+        "w": 8,
+        "h": 7
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "topk(10, sum by (host) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source!=\"heartbeat\",source=~\"$source\"}[$__range])))",
+          "queryType": "instant",
+          "legendFormat": "{{host}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "valueMode": "color"
+      }
+    },
+    {
+      "id": 140,
+      "type": "timeseries",
+      "title": "OS LOG VOLUME OVER TIME",
+      "description": "Combined RHEL and Windows OS log activity. The time axis follows the dashboard time picker.",
+      "gridPos": {
+        "x": 0,
+        "y": 19,
+        "w": 16,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum(count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source!=\"heartbeat\",source=~\"$source\"}[$__interval]))",
+          "queryType": "range",
+          "legendFormat": "All OS logs"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 141,
+      "type": "timeseries",
+      "title": "OS LOG VOLUME BY OS",
+      "description": "Compare RHEL and Windows log activity over the selected dashboard range.",
+      "gridPos": {
+        "x": 16,
+        "y": 22,
+        "w": 8,
+        "h": 8
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (os) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source!=\"heartbeat\",source=~\"$source\"}[$__interval]))",
+          "queryType": "range",
+          "legendFormat": "{{os}}"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      }
+    },
+    {
+      "id": 150,
+      "type": "logs",
+      "title": "RHEL PACKAGE / OS CHANGE AUDIT",
+      "description": "RHEL package changes from DNF logs.",
+      "gridPos": {
+        "x": 0,
+        "y": 34,
+        "w": 12,
+        "h": 10
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",os=\"rhel\",source=\"dnf\"}",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyJSON": false,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      }
+    },
+    {
+      "id": 151,
+      "type": "logs",
+      "title": "RHEL SYSTEM / SERVICE EVENTS",
+      "description": "RHEL systemd service state and failure events.",
+      "gridPos": {
+        "x": 12,
+        "y": 34,
+        "w": 12,
+        "h": 10
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",os=\"rhel\",source=\"systemd\"}",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyJSON": false,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      }
+    },
+    {
+      "id": 152,
+      "type": "logs",
+      "title": "WINDOWS OS EVENT EXPLORER",
+      "description": "Windows System, Application, and Setup events collected by Fluent Bit.",
+      "gridPos": {
+        "x": 0,
+        "y": 44,
+        "w": 12,
+        "h": 10
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",os=\"windows\",source=~\"system|application|setup\"}",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyJSON": false,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      }
+    },
+    {
+      "id": 153,
+      "type": "logs",
+      "title": "WINDOWS FAILURE / ERROR EVENTS",
+      "description": "Windows events containing generic error/failure/critical keywords.",
+      "gridPos": {
+        "x": 12,
+        "y": 44,
+        "w": 12,
+        "h": 10
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",os=\"windows\",source=~\"system|application|setup\"} |~ \"(?i)(error|fail|critical)\"",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyJSON": false,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      }
+    },
+    {
+      "id": 160,
+      "type": "table",
+      "title": "NO HEARTBEAT / DOWN SERVERS",
+      "description": "Inventory: heartbeat seen within 30 days. Online: heartbeat received within 5 minutes. No heartbeat: inventory server with no heartbeat within 5 minutes.",
+      "gridPos": {
+        "x": 0,
+        "y": 54,
+        "w": 24,
+        "h": 9
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "(sum by (host,ip,site,os,environment,app_group,server_role) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d]))) unless (sum by (host,ip,site,os,environment,app_group,server_role) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[5m])))",
+          "queryType": "instant",
+          "legendFormat": "{{host}}"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "renameByName": {
+              "host": "Host",
+              "site": "Site",
+              "os": "OS",
+              "environment": "Environment",
+              "app_group": "App Group",
+              "server_role": "Server Role"
+            },
+            "excludeByName": {
+              "Value": true,
+              "Time": true
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "enablePagination": true
+      },
+      "descriptionMode": "tooltip"
+    },
+    {
+      "id": 170,
+      "type": "logs",
+      "title": "ALL OS LOG EXPLORER",
+      "description": "Full RHEL + Windows OS log explorer. Use dashboard filters and time picker.",
+      "gridPos": {
+        "x": 0,
+        "y": 87,
+        "w": 24,
+        "h": 13
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "{job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=~\"$source\"}",
+          "queryType": "range"
+        }
+      ],
+      "options": {
+        "dedupStrategy": "none",
+        "enableLogDetails": true,
+        "prettifyJSON": false,
+        "showCommonLabels": false,
+        "showLabels": true,
+        "showTime": true,
+        "sortOrder": "Descending",
+        "wrapLogMessage": true
+      }
+    },
+    {
+      "id": 121,
+      "type": "table",
+      "title": "SELECTED APPLICATION - SERVER / IP DETAIL",
+      "description": "Click an application name in APPLICATION / SERVER STATUS to filter this table. IP is shown when the Fluent Bit agent sends an `ip` Loki label.",
+      "gridPos": {
+        "x": 0,
+        "y": 75,
+        "w": 24,
+        "h": 12
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (host,ip,os,site,environment,app_group,server_role) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source!=\"heartbeat\",source=~\"$source\"}[$__range]))",
+          "queryType": "instant",
+          "format": "table",
+          "instant": true,
+          "range": false,
+          "legendFormat": "{{host}}"
+        }
+      ],
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true
+            },
+            "indexByName": {
+              "host": 0,
+              "ip": 1,
+              "os": 2,
+              "site": 3,
+              "environment": 4,
+              "app_group": 5,
+              "server_role": 6
+            },
+            "renameByName": {
+              "host": "Host",
+              "ip": "IP",
+              "os": "OS",
+              "site": "Site",
+              "environment": "Environment",
+              "app_group": "Application",
+              "server_role": "Server Role"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Host"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Open logs for this server",
+                    "url": "/d/${__dashboard.uid}?var-environment=${environment}&var-site=${site}&var-app_group=${app_group}&var-server_role=${server_role}&var-os=${os}&var-host=${__value.text}&var-source=${source}&${__url_time_range}",
+                    "openInNewTab": false
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IP"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "enablePagination": true,
+        "sortBy": [
+          {
+            "displayName": "Host",
+            "desc": false
+          }
+        ]
+      }
+    },
+    {
+      "id": 122,
+      "type": "table",
+      "title": "SERVER INVENTORY / SEARCH",
+      "description": "Searchable server matrix from Loki labels: Hostname, IP, Application, Role, OS, Environment and Site.",
+      "gridPos": {
+        "x": 0,
+        "y": 63,
+        "w": 24,
+        "h": 12
+      },
+      "datasource": {
+        "type": "loki",
+        "uid": "${DS_LOG_MANAGEMENT}"
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "expr": "sum by (host,ip,os,site,environment,app_group,server_role) (count_over_time({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\",ip=~\"$ip\",source=\"heartbeat\"}[30d]))",
+          "queryType": "instant",
+          "format": "table",
+          "instant": true,
+          "range": false
+        }
+      ],
+      "transformations": [
+        {
+          "id": "labelsToFields",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true
+            },
+            "indexByName": {
+              "host": 0,
+              "ip": 1,
+              "app_group": 2,
+              "server_role": 3,
+              "os": 4,
+              "environment": 5,
+              "site": 6
+            },
+            "renameByName": {
+              "host": "Hostname",
+              "ip": "IP Address",
+              "app_group": "Application",
+              "server_role": "Server Role",
+              "os": "OS",
+              "environment": "Environment",
+              "site": "Site"
+            }
+          }
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true
+          }
+        }
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "enablePagination": true
+      }
+    }
+  ],
+  "refresh": "30s",
+  "schemaVersion": 39,
+  "tags": [
+    "Loki",
+    "OS Logs",
+    "Heartbeat",
+    "RHEL",
+    "Windows"
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "DS_LOG_MANAGEMENT",
+        "label": "Data Source",
+        "type": "datasource",
+        "query": "loki",
+        "refresh": 1,
+        "hide": 2
+      },
+      {
+        "name": "environment",
+        "label": "Environment",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOG_MANAGEMENT}"
+        },
+        "definition": "label_values({job=\"os-logs\"}, environment)",
+        "query": "label_values({job=\"os-logs\"}, environment)",
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "site",
+        "label": "Site",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOG_MANAGEMENT}"
+        },
+        "definition": "label_values({job=\"os-logs\",environment=~\"$environment\"}, site)",
+        "query": "label_values({job=\"os-logs\",environment=~\"$environment\"}, site)",
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "app_group",
+        "label": "App Group",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOG_MANAGEMENT}"
+        },
+        "definition": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\"}, app_group)",
+        "query": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\"}, app_group)",
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "server_role",
+        "label": "Server Role",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOG_MANAGEMENT}"
+        },
+        "definition": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\"}, server_role)",
+        "query": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\"}, server_role)",
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "os",
+        "label": "OS",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOG_MANAGEMENT}"
+        },
+        "definition": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\"}, os)",
+        "query": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\"}, os)",
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "host",
+        "label": "Host",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOG_MANAGEMENT}"
+        },
+        "definition": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\"}, host)",
+        "query": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\"}, host)",
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "ip",
+        "label": "IP Address",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOG_MANAGEMENT}"
+        },
+        "definition": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\"}, ip)",
+        "query": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\"}, ip)",
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      },
+      {
+        "name": "source",
+        "label": "Source",
+        "type": "query",
+        "datasource": {
+          "type": "loki",
+          "uid": "${DS_LOG_MANAGEMENT}"
+        },
+        "definition": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\"}, source)",
+        "query": "label_values({job=\"os-logs\",environment=~\"$environment\",site=~\"$site\",app_group=~\"$app_group\",server_role=~\"$server_role\",os=~\"$os\",host=~\"$host\"}, source)",
+        "refresh": 2,
+        "includeAll": true,
+        "allValue": ".*",
+        "multi": true,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        }
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "OS Centralized Log Management - Heartbeat Inventory & Audit",
+  "uid": "oslog-hb-v9",
+  "version": 1,
+  "weekStart": "",
+  "description": "Loki-only OS log management for RHEL and Windows. Server distribution is based on unique host+os, log distribution on source, and top hosts on host log volume. Dashboard time picker applies to these panels."
+}
